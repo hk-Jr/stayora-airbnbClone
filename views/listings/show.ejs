@@ -3,9 +3,9 @@
 <body>
   <div class="row mt-3">
     <div class="col-8 offset-3">
-      <h3>listing Details</h3>
+      <h3><%= listing.title %></h3>
     </div>
-    <div class="card col-6 offset-3 show-card">
+    <div class="card col-6 offset-3 show-card listing-card">
       <img
         src="<%= listing.image.url %>"
         class="card-img-top show-image"
@@ -13,7 +13,6 @@
       />
       <div class="card-body">
         <p class="card-text">
-          <b> <%= listing.title %> </b><br />
           <%=listing.description%> <br />
           <!-- this will add rupees symbol and comma with india standrad -->
           &#8377; <%=listing.price.toLocaleString("en-in")%><br />
@@ -25,7 +24,7 @@
     <br />
   </div>
 
-  <div class="btns">
+  <div class="btns mb-3">
     <a
       href="/listings/<%= listing._id%>/edit"
       class="btn btn-dark col-1 offset-3 edit-btn"
@@ -34,6 +33,63 @@
 
     <form method="post" action="/listings/<%=listing._id%>?_method=delete">
       <button class="btn btn-dark offset-4">Delete</button>
+    </form>
+  </div>
+
+  <!-- review form & showing Reviws  -->
+  <div class="col-8 offset-3 mb-3">
+    
+  <div class="row mb-3">
+    <hr>
+    <h4>All review</h4>
+    <% for(review of listing.reviews){ %>
+      <div class="card col-5 ms-3 mb-3">
+        <div class="card-body">
+          <p class="card-text">
+            <strong>Rating:</strong> <%= review.rating %> Stars <br />
+            <strong>Comment:</strong> <%= review.comment %>
+          </p>
+          <form method="post" action="/listings/<%= listing._id%>/reviews/<%= review._id%>?_method=DELETE">
+            <button class="btn btn-sm btn-dark mb-1">Delete</button>
+          </form>
+        </div>
+      </div>
+    <% } %>
+  </div>
+
+    <hr />
+    <h4>Leave a REVIEW</h4>
+    <form
+      action="/listings/<%=listing._id%>/reviews"
+      method="post"
+      class="form-label needs-validation"
+      novalidate
+    >
+      <div class="mb-3 mt-3">
+        <label for="rating" class="form-label">Rating</label>
+        <input
+          type="range"
+          min="1"
+          max="5"
+          id="rating"
+          name="review[rating]"
+          class="form-range"
+        />
+      </div>
+
+      <div class="mb-3 mt-3">
+        <label for="comment" class="form-label">Comment</label>
+        <textarea
+          name="review[comment]"
+          id="comment"
+          cols="30"
+          rows="5"
+          class="form-control"
+          required
+        ></textarea>
+        <div class="invalid-feedback">Add some content as a REVIEW</div>
+      </div>
+      <button class="btn btn-outline-dark">Submit review</button>
     </form>
   </div>
 </body>
