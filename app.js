@@ -1,17 +1,19 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const Listing = require("./models/listing.js");
-const path = require("path");
-const methodOverride = require("method-override");
+const path = require("path"); //for public folder linking
+const methodOverride = require("method-override"); //to use delete,
 const ejsMate = require("ejs-mate");
-const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
+const session = require("express-session");
+const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user.js");
 
-const { listingSchema, reviewSchema } = require("./schema.js");
-
-//aquring review
-const Review = require("./models/review.js");
+const listingsRouter = require("./routes/listing.js");
+const reviewsRouter = require("./routes/review.js");
+const userRouter = require("./routes/user.js");
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/stayora";
 main()
@@ -35,163 +37,61 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 
 app.use(express.static(path.join(__dirname, "/public")));
-app.get(
-  "/",
-  wrapAsync(async (req, res) => {
-    res.send("HI, I am Root.");
-  }),
-);
 
-//the whole JOI functionaities are added here -- interaction happening
-const validateListings = (req, res, next) => {
-  let { err } = listingSchema.validate(req.body);
+const sessionOptions = {
+  secret: "mysupersecretcode",
+  resave: false,
+  saveUninitialized: true,
 
-  if (err) {
-    let errMsg = err.details.map((el) => el.message).join(",");
-    throw new ExpressError(400, errMsg);
-  } else {
-    next();
-  }
+  //setting cookie expire date
+  cookie: {
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+  },
 };
 
-const validateReview = (req, res, next) => {
-  let { err } = reviewSchema.validate(req.body);
+//session - messeage Flash
+app.use(session(sessionOptions));
+app.use(flash());
 
-  if (err) {
-    let errMsg = err.details.map((el) => el.message).join(",");
-    throw new ExpressError(400, errMsg);
-  } else {
-    next();
-  }
-};
+//AUTH - middlewares -- must be written after session code
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
 
-//index Route
-app.get(
-  "/listings",
-  wrapAsync(async (req, res) => {
-    const allListings = await Listing.find({});
-    res.render("./listings/index.ejs", { allListings });
-  }),
-);
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
-//new Route
-app.get(
-  "/listings/new",
-  wrapAsync(async (req, res) => {
-    res.render("./listings/new.ejs");
-  }),
-);
+app.get("/", (req, res) => {
+  res.send("HI, I am Root.");
+});
 
-//show Route
-//added populate to render the other review collection data
-app.get(
-  "/listings/:id",
-  wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    const listing = await Listing.findById(id).populate("reviews");
-    res.render("./listings/show.ejs", { listing });
-  }),
-);
+//middleware to run the flash
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error"); // use .error
+  next();
+});
 
-//create Route
-app.post(
-  "/listings",
-  validateListings,
-  wrapAsync(async (req, res) => {
-    // if (!req.body.listing) {
-    //   throw new ExpressError("send valid data for Listing", 400);
-    // }
-
-    let result = listingSchema.validate(req.body);
-    console.log(result);
-
-    if (result.error) {
-      throw new ExpressError(400, result.error);
-    }
-    const newListing = await new Listing(req.body.listing);
-    await newListing.save();
-
-    res.redirect("/listings");
-  }),
-);
-
-//edit Route
-app.get(
-  "/listings/:id/edit",
-  wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    const listing = await Listing.findById(id);
-    res.render("./listings/edit.ejs", { listing });
-  }),
-);
-
-//update Route
-app.put(
-  "/listings/:id",
-  validateListings,
-  wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-    res.redirect(`/listings/${id}`);
-  }),
-);
-
-//delete Route
-//added IF any listings are deleted then review array must also be deletd
-app.delete(
-  "/listings/:id",
-  wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    let deletedListing = await Listing.findByIdAndDelete(id); //in listing.js a middleware will automatically be called
-    console.log(deletedListing);
-
-    res.redirect("/listings");
-  }),
-);
-
-//reviews Route
-app.post(
-  "/listings/:id/reviews",
-  validateReview,
-  wrapAsync(async (req, res) => {
-    let listing = await Listing.findById(req.params.id);
-
-    let newReview = new Review(req.body.review);
-    listing.reviews.push(newReview);
-
-    await newReview.save();
-    await listing.save();
-
-    res.redirect(`/listings/${listing._id}`);
-  }),
-);
-
-//delete review Route
-app.delete(
-  "/listings/:id/reviews/:reviewId",
-  wrapAsync(async (req, res) => {
-    let { id, reviewId } = req.params;
-
-    await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    await Review.findByIdAndDelete(reviewId);
-
-    res.redirect(`/listings/${id}`);
-  }),
-);
-
-// app.get("/testListing", async (req, res) => {
-//   let sampleListing = new Listing({
-//     title: "my new Villa",
-//     description: "by the seashore of the Goa",
-//     price: 15000,
-//     location: "india",
-//     country: "india",
+// app.get("/demoUser", async (req, res) => {
+//   let fakeUser = new User({
+//     email: "student@gmail.com",
+//     username: "delta-studnet",
 //   });
 
-//   await sampleListing.save();
-//   console.log("sample was saved");
-//   res.send("successfull testing");
+//   let registeredUser = await User.register(fakeUser, "helloworld");
+//   res.send(registeredUser);
 // });
+
+//all listing routes will be directed to routes/listing.js
+app.use("/listings", listingsRouter);
+
+//all review routes will be directed to routes/review.js
+app.use("/listings/:id/reviews", reviewsRouter);
+
+//all user routes will be directed to routes/user.js
+app.use("/", userRouter);
 
 // catch-all for invalid routes (SAFE)
 app.use((req, res, next) => {
