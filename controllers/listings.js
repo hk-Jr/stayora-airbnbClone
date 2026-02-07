@@ -32,7 +32,7 @@ module.exports.showListing = async (req, res) => {
 
   res.render("./listings/show.ejs", {
     listing,
-    mapToken: process.env.MAPBOX_TOKEN, // ✅ Pass the token to the view
+    mapToken: process.env.MAPBOX_TOKEN, //  Pass the token to the view
   });
 };
 
