@@ -1,7 +1,17 @@
 <% layout("/layouts/boilerplate") %>
 
+<!-- <script>
+  let mapToken = "<%= process.env.MAPBOX_TOKEN %>";
+  let coordinates = "<%- JSON.stringify(listing.geometry.coordinates) %>";
+</script> -->
+
 <script>
-  let mapToken = "<%= process.env.MAP_TOKEN %>";
+  let mapToken = "<%= mapToken %>";
+  <% if (listing.geometry && listing.geometry.coordinates) { %>
+    let coordinates = <%- JSON.stringify(listing.geometry.coordinates) %>;
+  <% } else { %>
+    let coordinates = null;
+  <% } %>
 </script>
 
 <body>
@@ -40,9 +50,9 @@
     <br />
   </div>
 
- <% if (currentUser && currentUser._id.equals(listing.owner._id)) { %>
+  <% if (currentUser && currentUser._id.equals(listing.owner._id)) { %>
   <div class="btns mb-3">
-    <a
+    
       href="/listings/<%= listing._id %>/edit"
       class="btn btn-dark col-1 offset-3 edit-btn"
     >
@@ -57,8 +67,7 @@
       <button class="btn btn-dark offset-4">Delete</button>
     </form>
   </div>
-<% } %>
-
+  <% } %>
 
   <!-- Review form & showing reviews -->
   <div class="col-8 offset-3 mb-3">
@@ -152,13 +161,17 @@
   </div>
 
   <!-- maps -->
-   <div class="col-8 offset-3 mb-3">
-    <h3>where you'll be</h3>
-    <div id="map">
-
-    </div>
-   </div>
-  
+  <% if (listing.geometry && listing.geometry.coordinates) { %>
+  <div class="col-8 offset-3 mb-3">
+    <h3>Where you'll be</h3>
+    <div id="map"></div>
+  </div>
+  <% } else { %>
+  <div class="col-8 offset-3 mb-3">
+    <h3>Where you'll be</h3>
+    <p class="text-muted">Location data not available for this listing.</p>
+  </div>
+  <% } %>
 </body>
 
 <script src="/js/map.js"></script>
