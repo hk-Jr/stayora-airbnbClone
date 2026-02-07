@@ -19,5 +19,15 @@
         <a class="nav-link" href="/listings/new">Add new Listings</a>
       </div>
     </div>
+
+    <div class="navbar-nav ms-auto">
+      <% if(!currentUser){ %>
+      <a class="nav-link" href="/signUp">Sign Up</a>
+      <a class="nav-link" href="/login">Log in</a>
+      <% } %>
+      <% if(currentUser){ %>
+      <a class="nav-link" href="/logout">Log out</a>
+      <% } %>
+    </div>
   </div>
 </nav>

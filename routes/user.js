@@ -9,41 +9,26 @@ const wrapAsync = require("../utils/wrapAsync.js");
 
 const passport = require("passport");
 
-router.get("/signUp", (req, res) => {
-  res.render("users/signUp.ejs");
-});
+const { saveRedirectUrl } = require("../middleware.js");
 
-router.post(
-  "/signUp",
-  wrapAsync(async (req, res) => {
-    try {
-      let { username, email, password } = req.body;
-      const newUser = new User({ username, email });
-      const registerdUser = await User.register(newUser, password);
-      console.log(registerdUser);
-      req.flash("success", "Welcome to Stayora!");
-      res.redirect("/listings");
-    } catch (e) {
-      req.flash("error", e.message);
-      res.redirect("/signUp");
-    }
-  }),
-);
+//M V C - controller
+const userController = require("../controllers/users.js");
 
-router.get("/login", (req, res) => {
-  res.render("users/login.ejs");
-});
+router.get("/signUp", userController.renderSignUpForm);
+
+router.post("/signUp", wrapAsync(userController.signUp));
+
+router.get("/login", userController.renderLoginForm);
 
 router.post(
   "/login",
+  saveRedirectUrl,
   passport.authenticate("local", {
     failureRedirect: "/login",
     failureFlash: true,
   }),
-  (req, res) => {
-    req.flash("success", "Welcome back to Stayora!");
-    res.redirect("/listings");
-  },
+  userController.login,
 );
 
+router.get("/logout", userController.logout);
 module.exports = router;

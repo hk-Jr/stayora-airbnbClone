@@ -7,7 +7,7 @@ const listingSchema = Joi.object({
     image: Joi.object({
       filename: Joi.string().allow("", null),
       url: Joi.string().allow("", null),
-    }).allow(null), // ✅ Now it expects an object
+    }).allow(null), //we can submit null values as well now.
     price: Joi.number().required().min(0),
     location: Joi.string().required(),
     country: Joi.string().required(),
