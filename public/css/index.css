@@ -1,0 +1,117 @@
+/* index.ejs STYLINGS */
+
+/* Index Page Styles */
+#filters {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 2rem;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #ebebeb;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+#filters::-webkit-scrollbar {
+  display: none;
+}
+
+.filter {
+  text-align: center;
+  min-width: 60px;
+  opacity: 0.7;
+  transition: all 0.2s;
+  cursor: pointer;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid transparent;
+}
+
+.filter:hover {
+  opacity: 1;
+  border-bottom-color: #dddddd;
+}
+
+.filter.active {
+  opacity: 1;
+  border-bottom-color: #222222;
+}
+
+.filter i {
+  font-size: 1.5rem;
+  color: #717171;
+  margin-bottom: 0.5rem;
+}
+
+.filter p {
+  font-size: 0.75rem;
+  margin: 0;
+  font-weight: 600;
+  color: #222222;
+}
+
+/* Tax switch */
+.tax-info {
+  display: none;
+}
+
+.tax-toggle {
+  border: 1px solid #dddddd;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin-left: auto;
+  background-color: white;
+  transition: box-shadow 0.2s;
+}
+
+.tax-toggle:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
+.form-check-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* Listing cards */
+.listing-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.listing-card {
+  border: none !important;
+  margin-bottom: 2rem;
+  transition: transform 0.2s;
+}
+
+.listing-card:hover {
+  transform: scale(1.02);
+}
+
+.card-img-top {
+  border-radius: 0.75rem !important;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 0.75rem 0 !important;
+}
+
+.card-text {
+  font-size: 0.95rem;
+}
+
+.card-text b {
+  color: #222222;
+}
+
+.card-img-overlay {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.card-img-overlay:hover {
+  opacity: 0.05;
+  background-color: black;
+}

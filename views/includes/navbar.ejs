@@ -1,53 +1,91 @@
-
 <!-- search btn  -->
-<style>
-  .btn-search {
-    background-color: #fe424d;
-    color: white;
-  }
-  .btn-search:hover {
-    background-color: #fe424d;
-    color: white;
-  }
-</style>
+
 
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand navbar" href="/listings"
-      ><i class="fa-regular fa-compass"></i
-    ></a>
-    <!-- hamburger button -->
+    <a class="navbar-brand" href="/listings">
+      <i class="fa-regular fa-compass"></i>
+    </a>
+
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <!-- Close button (only visible on mobile) -->
+      <button class="menu-close d-md-none" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Left side - Explore -->
+      <div class="navbar-nav">
+        <a class="nav-link" href="/listings">Explore</a>
+      </div>
+
+      <!-- Center - Search (on desktop) -->
+      <div class="navbar-nav mx-auto d-none d-md-flex">
+        <form class="d-flex search-form" role="search">
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Search Destinations"
+            aria-label="Search"
+          />
+          <button class="btn btn-search" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </form>
+      </div>
+
+      <!-- Right side - User actions -->
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link" href="/listings/new">Become a HOST</a>
+        <% if(!currentUser) { %>
+        <a class="nav-link" href="/signUp"><b>Sign Up</b></a>
+        <a class="nav-link" href="/login"><b>Log in</b></a>
+        <% } %> 
+        <% if(currentUser) { %>
+        <a class="nav-link" href="/logout"><b>Log out</b></a>
+        <% } %>
+      </div>
+
+      <!-- Search (on mobile) -->
+      <div class="d-md-none mt-2">
+        <form class="d-flex search-form" role="search">
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Search Destinations"
+            aria-label="Search"
+          />
+          <button class="btn btn-search" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Hamburger button (moved after collapse div) -->
     <button
       class="navbar-toggler"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link" href="/listings">Explore</a>
-      </div>
-
-      <div class="navbar-nav ms-auto">
-        <form class="d-flex" role="search">
-      <input class="form-control me-2" type="search" placeholder="Search Destinations" />
-      <button class="btn btn-search" type="submit"><i class="fa-brands fa-searchengin"></i></button>
-    </form>
-      </div>
-    
-
-    <div class="navbar-nav ms-auto">
-      <a class="nav-link" href="/listings/new">Become a HOST</a>
-      <% if(!currentUser){ %>
-      <a class="nav-link" href="/signUp"><b>Sign Up</b></a>
-      <a class="nav-link" href="/login"><b>Log in</b></a>
-      <% } %>
-      <% if(currentUser){ %>
-      <a class="nav-link" href="/logout">Log out</a>
-      <% } %>
-    </div>
-    </div>
   </div>
 </nav>
+
+<script>
+  // Auto-close menu when clicking a link on mobile
+  document.querySelectorAll('.navbar-collapse .nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth < 768) {
+        const navbarCollapse = document.getElementById('navbarNavAltMarkup');
+        const bsCollapse = new bootstrap.Collapse(navbarCollapse, {
+          toggle: true
+        });
+      }
+    });
+  });
+</script>
