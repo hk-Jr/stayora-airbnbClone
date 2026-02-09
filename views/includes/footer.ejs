@@ -1,14 +1,396 @@
-<footer>
-  <div class="f-info">
-    <div class="f-info-socials">
-      <i class="fa-brands fa-facebook"></i>
-      <i class="fa-brands fa-instagram"></i>
-      <i class="fa-brands fa-linkedin-in"></i>
+<style>
+  .footer {
+    background-color: #f7f7f7;
+    border-top: 1px solid #ebebeb;
+    margin-top: auto;
+    padding: 3rem 0 1.5rem;
+  }
+
+  .footer-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .footer-main {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #dddddd;
+  }
+
+  .footer-section h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #222222;
+    margin-bottom: 1rem;
+  }
+
+  .footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-section ul li {
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-section a {
+    text-decoration: none;
+    color: #717171;
+    font-size: 0.875rem;
+    transition: color 0.2s;
+    display: inline-block;
+  }
+
+  .footer-section a:hover {
+    color: #fe424d;
+  }
+
+  .footer-section p {
+    color: #717171;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Developer Section - Eye-Catching Styles */
+  .developer-section {
+    background: linear-gradient(135deg, #fe424d 0%, #ff6b6b 100%);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(254, 66, 77, 0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .developer-section::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 70%
+    );
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.8;
+    }
+  }
+
+  .developer-section h4 {
+    color: white;
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .developer-section p {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+    font-weight: 500;
+  }
+
+  .developer-section p i {
+    color: #ffe066;
+    animation: heartbeat 1.5s ease-in-out infinite;
+  }
+
+  @keyframes heartbeat {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    10%,
+    30% {
+      transform: scale(1.2);
+    }
+    20%,
+    40% {
+      transform: scale(1);
+    }
+  }
+
+  .developer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .developer-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background-color: white;
+    border: 2px solid white;
+    border-radius: 8px;
+    transition: all 0.3s;
+    font-weight: 600;
+    color: #fe424d;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .developer-links a:hover {
+    background-color: #222222;
+    color: white;
+    border-color: #222222;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  }
+
+  .developer-links i {
+    font-size: 1.25rem;
+  }
+
+  .developer-links a span {
+    font-size: 0.875rem;
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .f-info-brand {
+    font-size: 0.875rem;
+    color: #717171;
+  }
+
+  .f-info-socials {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .f-info-socials a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white;
+    border: 1px solid #dddddd;
+    transition: all 0.2s;
+  }
+
+  .f-info-socials i {
+    font-size: 1.125rem;
+    color: #222222;
+    transition: color 0.2s;
+  }
+
+  .f-info-socials a:hover {
+    background-color: #fe424d;
+    border-color: #fe424d;
+  }
+
+  .f-info-socials a:hover i {
+    color: white;
+  }
+
+  .f-info-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .f-info-links a {
+    text-decoration: none;
+    color: #717171;
+    font-size: 0.875rem;
+    transition: color 0.2s;
+  }
+
+  .f-info-links a:hover {
+    color: #fe424d;
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    .footer {
+      padding: 2rem 0 1rem;
+    }
+
+    .footer-main {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+    }
+
+    .footer-section {
+      text-align: center;
+    }
+
+    .developer-section {
+      text-align: center;
+    }
+
+    .developer-links {
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    .developer-links a {
+      flex: 1;
+      max-width: 140px;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      text-align: center;
+      gap: 1.5rem;
+    }
+
+    .f-info-socials {
+      justify-content: center;
+    }
+
+    .f-info-links {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .developer-links {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .developer-links a {
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .f-info-socials a {
+      width: 45px;
+      height: 45px;
+    }
+
+    .f-info-socials i {
+      font-size: 1.25rem;
+    }
+  }
+</style>
+
+<footer class="footer">
+  <div class="footer-container">
+    <!-- Main Footer Sections -->
+    <div class="footer-main">
+      <!-- About Section -->
+      <div class="footer-section">
+        <h4>About Stayora</h4>
+        <ul>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/newsroom">Newsroom</a></li>
+          <li><a href="/careers">Careers</a></li>
+          <li><a href="/investors">Investors</a></li>
+        </ul>
+      </div>
+
+      <!-- Support Section -->
+      <div class="footer-section">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="/help">Help Center</a></li>
+          <li><a href="/safety">Safety Information</a></li>
+          <li><a href="/cancellation">Cancellation Options</a></li>
+          <li><a href="/contact">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Hosting Section -->
+      <div class="footer-section">
+        <h4>Hosting</h4>
+        <ul>
+          <li><a href="/host">Become a Host</a></li>
+          <li><a href="/host-resources">Host Resources</a></li>
+          <li><a href="/community">Community Forum</a></li>
+          <li><a href="/responsible-hosting">Responsible Hosting</a></li>
+        </ul>
+      </div>
+
+      <!-- Developer Section - Eye-Catching! -->
+      <div class="footer-section developer-section">
+        <h4>✨ Developer</h4>
+        <p>Built with <i class="fa-solid fa-heart"></i> by HK Jr</p>
+        <div class="developer-links">
+          <a
+            href="https://github.com/hk-Jr"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i class="fa-brands fa-github"></i>
+            <span>GitHub</span>
+          </a>
+          <a
+            href="https://linkedin.com/in/hk-jr/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i class="fa-brands fa-linkedin-in"></i>
+            <span>LinkedIn</span>
+          </a>
+        </div>
+      </div>
     </div>
-    <div class="f-info-brand">&copy; Stayora PVL</div>
-    <div class="f-info-links">
-      <a href="/privacy">Privacy</a>
-      <a href="/terms">Terms</a>
+
+    <!-- Bottom Footer -->
+    <div class="footer-bottom">
+      <div class="f-info-brand">
+        &copy; 2025 Stayora PVL. All rights reserved.
+      </div>
+
+      <div class="f-info-socials">
+        <a href="https://facebook.com" target="_blank" aria-label="Facebook">
+          <i class="fa-brands fa-facebook"></i>
+        </a>
+        <a href="https://instagram.com" target="_blank" aria-label="Instagram">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a href="https://twitter.com" target="_blank" aria-label="Twitter">
+          <i class="fa-brands fa-twitter"></i>
+        </a>
+        <a href="https://youtube.com" target="_blank" aria-label="YouTube">
+          <i class="fa-brands fa-youtube"></i>
+        </a>
+      </div>
+
+      <div class="f-info-links">
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/sitemap">Sitemap</a>
+      </div>
     </div>
   </div>
 </footer>

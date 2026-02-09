@@ -303,47 +303,6 @@ body {
   border: 1px solid #dddddd;
 }
 
-/* Footer */
-.f-info {
-  text-align: center;
-  display: flex;
-  height: 80px;
-  background-color: #f7f7f7;
-  border-top: 1px solid #ebebeb;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  align-items: center;
-  margin-top: auto;
-}
-
-.f-info-links a {
-  text-decoration: none;
-  color: #222222;
-  font-size: 14px;
-  margin: 0 16px;
-}
-
-.f-info-links a:hover {
-  text-decoration: underline;
-}
-
-.f-info-socials i {
-  margin-right: 16px;
-  font-size: 20px;
-  color: #222222;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.f-info-socials i:hover {
-  color: #fe424d;
-}
-
-.f-info-brand {
-  font-size: 14px;
-  color: #717171;
-}
-
 /* Reviews */
 .starability-result {
   margin: 8px 0;
