@@ -107,6 +107,11 @@ app.use((req, res, next) => {
 //   res.send(registeredUser);
 // });
 
+//hero landing page at root
+app.get("/", (req, res) => {
+  res.render("listings/hero.ejs");
+});
+
 //all listing routes will be directed to routes/listing.js
 app.use("/listings", listingsRouter);
 
